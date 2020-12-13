@@ -80,7 +80,11 @@ func (em ErrMap) Keys() []string {
 func (em ErrMap) Report(w io.Writer, name string) {
 	twc := twrap.NewTWConfOrPanic(twrap.SetWriter(w))
 
-	twc.WrapPrefixed(name+": ", em.Summary(), 0)
+	if name == "" {
+		twc.Wrap(em.Summary(), 0)
+	} else {
+		twc.WrapPrefixed(name+": ", em.Summary(), 0)
+	}
 
 	cats := em.Keys()
 	sort.Strings(cats)
