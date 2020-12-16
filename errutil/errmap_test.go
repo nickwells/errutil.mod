@@ -158,3 +158,56 @@ func TestErrMap(t *testing.T) {
 		testhelper.DiffString(t, tc.IDStr(), "report", b.String(), tc.expReport)
 	}
 }
+
+func TestMatches(t *testing.T) {
+	testCases := []struct {
+		testhelper.ID
+		testhelper.ExpErr
+		em1 errutil.ErrMap
+		em2 errutil.ErrMap
+	}{
+		{
+			ID: testhelper.MkID("matches - empty maps"),
+		},
+		{
+			ID:  testhelper.MkID("matches - one cat, one error"),
+			em1: errutil.ErrMap{"cat1": []error{errors.New("an error")}},
+			em2: errutil.ErrMap{
+				"cat1": []error{errors.New("an error")},
+			},
+		},
+		{
+			ID: testhelper.MkID("matches fail - different numbers of cats"),
+			ExpErr: testhelper.MkExpErr(
+				`the category names differ:
+	"cat2" in other, not this`),
+			em1: errutil.ErrMap{
+				"cat1": []error{errors.New("an error")},
+			},
+			em2: errutil.ErrMap{
+				"cat1": []error{errors.New("an error")},
+				"cat2": []error{errors.New("an error")},
+			},
+		},
+		{
+			ID: testhelper.MkID("matches fail - different cats"),
+			ExpErr: testhelper.MkExpErr(
+				`the category names differ:
+	"cat1" in other, not this
+	"cat3" in this, not other`),
+			em1: errutil.ErrMap{
+				"cat2": []error{errors.New("an error")},
+				"cat3": []error{errors.New("an error")},
+			},
+			em2: errutil.ErrMap{
+				"cat1": []error{errors.New("an error")},
+				"cat2": []error{errors.New("an error")},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		err := tc.em1.Matches(tc.em2)
+		testhelper.CheckExpErr(t, err, tc)
+	}
+}

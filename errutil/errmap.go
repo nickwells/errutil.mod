@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"sort"
+	"strings"
 
 	"github.com/nickwells/twrap.mod/twrap"
 )
@@ -114,4 +115,59 @@ func (em ErrMap) reportErrors(twc *twrap.TWConf, cat string) {
 		}
 		twc.WrapPrefixed(prefix, e.Error(), errorIndent)
 	}
+}
+
+// Matches returns an error if the two ErrMaps differ, nil otherwise
+func (em ErrMap) Matches(other ErrMap) error {
+	differingCats := []string{}
+	for k := range em {
+		if _, ok := other[k]; !ok {
+			differingCats = append(differingCats,
+				fmt.Sprintf("%q in this, not other", k))
+		}
+	}
+	for k := range other {
+		if _, ok := em[k]; !ok {
+			differingCats = append(differingCats,
+				fmt.Sprintf("%q in other, not this", k))
+		}
+	}
+	if len(differingCats) > 0 {
+		sort.Strings(differingCats)
+		return fmt.Errorf("the category names differ:\n\t%s",
+			strings.Join(differingCats, "\n\t"))
+	}
+
+	errDiffs := []string{}
+	for cat, errs := range em {
+		errDiffs = append(errDiffs, errListDiffs(cat, errs, other[cat])...)
+	}
+	if len(errDiffs) > 0 {
+		sort.Strings(errDiffs)
+		return fmt.Errorf("the error details differ: %s",
+			strings.Join(errDiffs, ", "))
+	}
+	return nil
+}
+
+// errListDiffs returns a list of differences between the two lists of errors
+func errListDiffs(name string, list1, list2 []error) []string {
+	pfx := ""
+	if name != "" {
+		pfx = fmt.Sprintf("%q: ", name)
+	}
+	errDiffs := []string{}
+	if len(list1) != len(list2) {
+		return append(errDiffs,
+			fmt.Sprintf("%serror counts differ: %d != %d",
+				pfx, len(list1), len(list2)))
+	}
+	for i, err := range list1 {
+		if err.Error() != list2[i].Error() {
+			errDiffs = append(errDiffs,
+				fmt.Sprintf("%serror[%d]: %q != %q",
+					pfx, i, err, list2[i]))
+		}
+	}
+	return errDiffs
 }
