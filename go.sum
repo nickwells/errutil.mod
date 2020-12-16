@@ -1,4 +1,6 @@
 github.com/nickwells/testhelper.mod v1.12.1 h1:PqgnUVCFiuYxSwRs7grmxRethIp5/FDKZrllWscSKJs=
 github.com/nickwells/testhelper.mod v1.12.1/go.mod h1:Ct/U2PjL0n9hGc+US6uR/s4NxSRI33NM+0ZkrDkG0XI=
+github.com/nickwells/testhelper.mod v1.13.0 h1:0Ev0tHSD/xsOEBy8DjylAIcFHXXMqe20avEwHLhGcvU=
+github.com/nickwells/testhelper.mod v1.13.0/go.mod h1:Ct/U2PjL0n9hGc+US6uR/s4NxSRI33NM+0ZkrDkG0XI=
 github.com/nickwells/twrap.mod v1.4.9 h1:GaRPrTpMqQpIp1DQYuQLVVIEJUAPFUMUj7TFJPKpc4s=
 github.com/nickwells/twrap.mod v1.4.9/go.mod h1:c0gQLgPw93L8/0mnn5NjYE009+V1uYLEUq9t2aRpCOA=
