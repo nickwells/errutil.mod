@@ -63,9 +63,9 @@ func (em ErrMap) CategorySummary(cat string) string {
 	case 0:
 		return cat + " - no errors"
 	case 1:
-		return cat + " - 1 error"
+		return cat + ":"
 	}
-	return fmt.Sprintf("%s - %d errors", cat, len(em[cat]))
+	return fmt.Sprintf("%s - %d errors:", cat, len(em[cat]))
 }
 
 // Keys returns the keys to the ErrMap (the categories)

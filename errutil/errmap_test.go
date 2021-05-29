@@ -47,10 +47,10 @@ func TestErrMap(t *testing.T) {
 			expSummary: "an error was found",
 			expCS: []catSummary{
 				{cat: "nonesuch", summary: "nonesuch - no errors"},
-				{cat: "tiger", summary: "tiger - 1 error"},
+				{cat: "tiger", summary: "tiger:"},
 			},
 			expReport: `testname: an error was found
-      tiger - 1 error
+      tiger:
             cat too scary
 `,
 		},
@@ -65,10 +65,10 @@ func TestErrMap(t *testing.T) {
 			expSummary: "2 errors were found",
 			expCS: []catSummary{
 				{cat: "nonesuch", summary: "nonesuch - no errors"},
-				{cat: "tiger", summary: "tiger - 2 errors"},
+				{cat: "tiger", summary: "tiger - 2 errors:"},
 			},
 			expReport: `testname: 2 errors were found
-      tiger - 2 errors
+      tiger - 2 errors:
             1 : cat too scary
             2 : still too scary
 `,
@@ -85,14 +85,14 @@ func TestErrMap(t *testing.T) {
 			expSummary: "3 errors were found in 2 categories",
 			expCS: []catSummary{
 				{cat: "nonesuch", summary: "nonesuch - no errors"},
-				{cat: "tiger", summary: "tiger - 2 errors"},
-				{cat: "tigger", summary: "tigger - 1 error"},
+				{cat: "tiger", summary: "tiger - 2 errors:"},
+				{cat: "tigger", summary: "tigger:"},
 			},
 			expReport: `testname: 3 errors were found in 2 categories
-      tiger - 2 errors
+      tiger - 2 errors:
             1 : cat too scary
             2 : still too scary
-      tigger - 1 error
+      tigger:
             not a real cat
 `,
 		},
@@ -116,11 +116,11 @@ func TestErrMap(t *testing.T) {
 			expSummary: "11 errors were found in 2 categories",
 			expCS: []catSummary{
 				{cat: "nonesuch", summary: "nonesuch - no errors"},
-				{cat: "tiger", summary: "tiger - 10 errors"},
-				{cat: "tigger", summary: "tigger - 1 error"},
+				{cat: "tiger", summary: "tiger - 10 errors:"},
+				{cat: "tigger", summary: "tigger:"},
 			},
 			expReport: `testname: 11 errors were found in 2 categories
-      tiger - 10 errors
+      tiger - 10 errors:
              1 : cat too scary
              2 : still too scary
              3 : very scary
@@ -131,7 +131,7 @@ func TestErrMap(t *testing.T) {
              8 : scary
              9 : scary
             10 : scary
-      tigger - 1 error
+      tigger:
             not a real cat
 `,
 		},
