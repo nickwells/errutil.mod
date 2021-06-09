@@ -30,6 +30,12 @@ func (em *ErrMap) AddError(cat string, err error) {
 	(*em)[cat] = append((*em)[cat], err)
 }
 
+// HasErrors returns true if there are any errors in the map, false
+// otherwise.
+func (em ErrMap) HasErrors() bool {
+	return len(em) > 0
+}
+
 // CountErrors counts the total number of errors and the number of categories
 // (in that order)
 func (em ErrMap) CountErrors() (int, int) {

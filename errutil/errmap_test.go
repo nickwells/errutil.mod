@@ -143,6 +143,8 @@ func TestErrMap(t *testing.T) {
 			em.AddError(ce.cat, ce.err)
 		}
 		totErrs, totCats := em.CountErrors()
+		testhelper.DiffBool(t, tc.IDStr(), "HasErrors",
+			em.HasErrors(), tc.expTotCats > 0)
 		testhelper.DiffInt(t, tc.IDStr(), "tot errs", totErrs, tc.expTotErrs)
 		testhelper.DiffInt(t, tc.IDStr(), "tot cats", totCats, tc.expTotCats)
 		s := em.Summary()
