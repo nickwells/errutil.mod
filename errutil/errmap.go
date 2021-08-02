@@ -129,13 +129,17 @@ func (em ErrMap) Matches(other ErrMap) error {
 	for k := range em {
 		if _, ok := other[k]; !ok {
 			differingCats = append(differingCats,
-				fmt.Sprintf("%q in this, not other", k))
+				fmt.Sprintf(
+					"error category %q is only in one error map (the first)",
+					k))
 		}
 	}
 	for k := range other {
 		if _, ok := em[k]; !ok {
 			differingCats = append(differingCats,
-				fmt.Sprintf("%q in other, not this", k))
+				fmt.Sprintf(
+					"error category %q is only in one error map (the second)",
+					k))
 		}
 	}
 	if len(differingCats) > 0 {
@@ -171,7 +175,7 @@ func errListDiffs(name string, list1, list2 []error) []string {
 	for i, err := range list1 {
 		if err.Error() != list2[i].Error() {
 			errDiffs = append(errDiffs,
-				fmt.Sprintf("%serror[%d]: %q != %q",
+				fmt.Sprintf("%serror[%d]:\n\t    %q\n\t != %q",
 					pfx, i, err, list2[i]))
 		}
 	}

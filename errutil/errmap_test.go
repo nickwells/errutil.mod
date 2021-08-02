@@ -182,7 +182,7 @@ func TestMatches(t *testing.T) {
 			ID: testhelper.MkID("matches fail - different numbers of cats"),
 			ExpErr: testhelper.MkExpErr(
 				`the category names differ:
-	"cat2" in other, not this`),
+	error category "cat2" is only in one error map (the second)`),
 			em1: errutil.ErrMap{
 				"cat1": []error{errors.New("an error")},
 			},
@@ -195,8 +195,8 @@ func TestMatches(t *testing.T) {
 			ID: testhelper.MkID("matches fail - different cats"),
 			ExpErr: testhelper.MkExpErr(
 				`the category names differ:
-	"cat1" in other, not this
-	"cat3" in this, not other`),
+	error category "cat1" is only in one error map (the second)
+	error category "cat3" is only in one error map (the first)`),
 			em1: errutil.ErrMap{
 				"cat2": []error{errors.New("an error")},
 				"cat3": []error{errors.New("an error")},

@@ -41,17 +41,21 @@ func TestErrListDiffs(t *testing.T) {
 		{
 			ID: testhelper.MkID(
 				"non-empty lists, empty name - different errors"),
-			list1:    []error{errors.New("err1"), errors.New("err2")},
-			list2:    []error{errors.New("err1"), errors.New("different")},
-			expDiffs: []string{`error[1]: "err2" != "different"`},
+			list1: []error{errors.New("err1"), errors.New("err2")},
+			list2: []error{errors.New("err1"), errors.New("different")},
+			expDiffs: []string{`error[1]:
+	    "err2"
+	 != "different"`},
 		},
 		{
 			ID: testhelper.MkID(
 				"non-empty lists, non-empty name - different errors"),
-			name:     "xxx",
-			list1:    []error{errors.New("err1"), errors.New("err2")},
-			list2:    []error{errors.New("err1"), errors.New("different")},
-			expDiffs: []string{`"xxx": error[1]: "err2" != "different"`},
+			name:  "xxx",
+			list1: []error{errors.New("err1"), errors.New("err2")},
+			list2: []error{errors.New("err1"), errors.New("different")},
+			expDiffs: []string{`"xxx": error[1]:
+	    "err2"
+	 != "different"`},
 		},
 		{
 			ID: testhelper.MkID(
@@ -68,8 +72,12 @@ func TestErrListDiffs(t *testing.T) {
 				errors.New("different"),
 			},
 			expDiffs: []string{
-				`"xxx": error[1]: "err2" != "different"`,
-				`"xxx": error[2]: "err3" != "different"`,
+				`"xxx": error[1]:
+	    "err2"
+	 != "different"`,
+				`"xxx": error[2]:
+	    "err3"
+	 != "different"`,
 			},
 		},
 		{
@@ -86,8 +94,12 @@ func TestErrListDiffs(t *testing.T) {
 				errors.New("different"),
 			},
 			expDiffs: []string{
-				`error[1]: "err2" != "different"`,
-				`error[2]: "err3" != "different"`,
+				`error[1]:
+	    "err2"
+	 != "different"`,
+				`error[2]:
+	    "err3"
+	 != "different"`,
 			},
 		},
 	}
