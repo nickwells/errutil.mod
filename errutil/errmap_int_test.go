@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/nickwells/testhelper.mod/testhelper"
+	"github.com/nickwells/testhelper.mod/v2/testhelper"
 )
 
 func TestErrListDiffs(t *testing.T) {
