@@ -44,6 +44,7 @@ func (em ErrMap) CountErrors() (int, int) {
 	for _, errs := range em {
 		totErrs += len(errs)
 	}
+
 	return totErrs, len(em)
 }
 
@@ -60,6 +61,7 @@ func (em ErrMap) Summary() string {
 			summary += fmt.Sprintf(" in %d categories", categories)
 		}
 	}
+
 	return summary
 }
 
@@ -72,6 +74,7 @@ func (em ErrMap) CategorySummary(cat string) string {
 	case 1:
 		return cat + ":"
 	}
+
 	return fmt.Sprintf("%s - %d errors:", cat, len(em[cat]))
 }
 
@@ -81,6 +84,7 @@ func (em ErrMap) Keys() []string {
 	for cat := range em {
 		cats = append(cats, cat)
 	}
+
 	return cats
 }
 
@@ -122,6 +126,7 @@ func (em ErrMap) reportErrors(twc *twrap.TWConf, cat string) {
 // Matches returns an error if the two ErrMaps differ, nil otherwise
 func (em ErrMap) Matches(other ErrMap) error {
 	differingCats := []string{}
+
 	for k := range em {
 		if _, ok := other[k]; !ok {
 			differingCats = append(differingCats,
@@ -130,6 +135,7 @@ func (em ErrMap) Matches(other ErrMap) error {
 					k))
 		}
 	}
+
 	for k := range other {
 		if _, ok := em[k]; !ok {
 			differingCats = append(differingCats,
@@ -138,6 +144,7 @@ func (em ErrMap) Matches(other ErrMap) error {
 					k))
 		}
 	}
+
 	if len(differingCats) > 0 {
 		sort.Strings(differingCats)
 		return fmt.Errorf("the category names differ:\n\t%s",
@@ -148,11 +155,13 @@ func (em ErrMap) Matches(other ErrMap) error {
 	for cat, errs := range em {
 		errDiffs = append(errDiffs, errListDiffs(cat, errs, other[cat])...)
 	}
+
 	if len(errDiffs) > 0 {
 		sort.Strings(errDiffs)
 		return fmt.Errorf("the error details differ: %s",
 			strings.Join(errDiffs, ", "))
 	}
+
 	return nil
 }
 
@@ -162,12 +171,15 @@ func errListDiffs(name string, list1, list2 []error) []string {
 	if name != "" {
 		pfx = fmt.Sprintf("%q: ", name)
 	}
+
 	errDiffs := []string{}
+
 	if len(list1) != len(list2) {
 		return append(errDiffs,
 			fmt.Sprintf("%serror counts differ: %d != %d",
 				pfx, len(list1), len(list2)))
 	}
+
 	for i, err := range list1 {
 		if err.Error() != list2[i].Error() {
 			errDiffs = append(errDiffs,
@@ -175,5 +187,6 @@ func errListDiffs(name string, list1, list2 []error) []string {
 					pfx, i, err, list2[i]))
 		}
 	}
+
 	return errDiffs
 }

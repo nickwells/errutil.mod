@@ -15,10 +15,12 @@ func TestErrMap(t *testing.T) {
 		cat string
 		err error
 	}
+
 	type catSummary struct {
 		cat     string
 		summary string
 	}
+
 	testCases := []struct {
 		testhelper.ID
 		catErrs    []catErr
@@ -142,20 +144,27 @@ func TestErrMap(t *testing.T) {
 		for _, ce := range tc.catErrs {
 			em.AddError(ce.cat, ce.err)
 		}
+
 		totErrs, totCats := em.CountErrors()
+
 		testhelper.DiffBool(t, tc.IDStr(), "HasErrors",
 			em.HasErrors(), tc.expTotCats > 0)
 		testhelper.DiffInt(t, tc.IDStr(), "tot errs", totErrs, tc.expTotErrs)
 		testhelper.DiffInt(t, tc.IDStr(), "tot cats", totCats, tc.expTotCats)
+
 		s := em.Summary()
+
 		testhelper.DiffString(t, tc.IDStr(), "summary", s, tc.expSummary)
+
 		for i, ecs := range tc.expCS {
 			s := em.CategorySummary(ecs.cat)
 			testhelper.DiffString(t, tc.IDStr(),
 				fmt.Sprintf("category summary: %d (%q)", i, ecs.cat),
 				s, ecs.summary)
 		}
+
 		var b bytes.Buffer
+
 		em.Report(&b, "testname")
 		testhelper.DiffString(t, tc.IDStr(), "report", b.String(), tc.expReport)
 	}
