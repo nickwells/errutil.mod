@@ -6,6 +6,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/nickwells/mathutil.mod/v2/mathutil"
 	"github.com/nickwells/twrap.mod/twrap"
 )
 
@@ -106,19 +107,14 @@ func (em ErrMap) reportErrors(twc *twrap.TWConf, cat string) {
 	twc.Wrap(em.CategorySummary(cat), categoryIndent)
 
 	errs := em[cat]
-	digitCount := 1
-	if len(errs) >= 10 {
-		digitCount = 2
-	}
-	if len(errs) >= 100 {
-		digitCount = 3
-	}
+	digitCount := mathutil.Digits(len(errs))
 	prefix := ""
 
 	for i, e := range errs {
 		if len(errs) > 1 {
 			prefix = fmt.Sprintf("%*d : ", digitCount, i+1)
 		}
+
 		twc.WrapPrefixed(prefix, e.Error(), errorIndent)
 	}
 }
