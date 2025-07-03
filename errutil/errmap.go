@@ -125,11 +125,11 @@ func (em ErrMap) reportErrors(twc *twrap.TWConf, cat string) {
 
 // Matches returns an error if the two ErrMaps differ, nil otherwise
 func (em ErrMap) Matches(other ErrMap) error {
-	differingCats := []string{}
+	catDiffs := []string{}
 
 	for k := range em {
 		if _, ok := other[k]; !ok {
-			differingCats = append(differingCats,
+			catDiffs = append(catDiffs,
 				fmt.Sprintf(
 					"error category %q is only in one error map (the first)",
 					k))
@@ -138,17 +138,18 @@ func (em ErrMap) Matches(other ErrMap) error {
 
 	for k := range other {
 		if _, ok := em[k]; !ok {
-			differingCats = append(differingCats,
+			catDiffs = append(catDiffs,
 				fmt.Sprintf(
 					"error category %q is only in one error map (the second)",
 					k))
 		}
 	}
 
-	if len(differingCats) > 0 {
-		sort.Strings(differingCats)
+	if len(catDiffs) > 0 {
+		sort.Strings(catDiffs)
+
 		return fmt.Errorf("the category names differ:\n\t%s",
-			strings.Join(differingCats, "\n\t"))
+			strings.Join(catDiffs, "\n\t"))
 	}
 
 	errDiffs := []string{}
@@ -158,6 +159,7 @@ func (em ErrMap) Matches(other ErrMap) error {
 
 	if len(errDiffs) > 0 {
 		sort.Strings(errDiffs)
+
 		return fmt.Errorf("the error details differ: %s",
 			strings.Join(errDiffs, ", "))
 	}
