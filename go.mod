@@ -1,12 +1,12 @@
 module github.com/nickwells/errutil.mod
 
-go 1.24
+go 1.24.0
 
 require (
-	github.com/nickwells/testhelper.mod/v2 v2.4.2
-	github.com/nickwells/twrap.mod v1.5.10
+	github.com/nickwells/testhelper.mod/v2 v2.4.3
+	github.com/nickwells/twrap.mod v1.5.11
 )
 
-require github.com/nickwells/mathutil.mod/v2 v2.5.5
+require github.com/nickwells/mathutil.mod/v2 v2.5.7
 
-require golang.org/x/exp v0.0.0-20250620022241-b7579e27df2b // indirect
+require golang.org/x/exp v0.0.0-20251209150349-8475f28825e9 // indirect
